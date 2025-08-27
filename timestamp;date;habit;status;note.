@@ -1,0 +1,49 @@
+
+---
+
+## tick.py
+```python
+#!/usr/bin/env python3
+import argparse, csv, os, sys
+from datetime import datetime
+
+FIELDNAMES = ["timestamp", "date", "habit", "status", "note"]
+
+def main():
+    parser = argparse.ArgumentParser(description="Append a habit tick to progress.csv")
+    parser.add_argument("--habit", required=True,
+                        choices=["gym","supplements","github","steps","study","sleep",
+                                 "water","nutrition","udt-exam","polish","crypto"],
+                        help="Habit name")
+    parser.add_argument("--status", required=True, choices=["done","missed","partial"],
+                        help="Status")
+    parser.add_argument("--note", default="", help="Optional note")
+    parser.add_argument("--file", default="progress.csv", help="CSV file path")
+    args = parser.parse_args()
+
+    now = datetime.now()
+    row = {
+        "timestamp": now.isoformat(timespec="seconds"),
+        "date": now.date().isoformat(),
+        "habit": args.habit,
+        "status": args.status,
+        "note": args.note.strip()
+    }
+
+    file_exists = os.path.exists(args.file)
+    with open(args.file, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMES, delimiter=";")
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(row)
+
+    msg = f"Saved: {row['date']} {row['habit']} -> {row['status']}"
+    if row["note"]:
+        msg += f" | {row['note']}"
+    print(msg)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(130)
