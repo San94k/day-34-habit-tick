@@ -1,0 +1,17 @@
+# 1) створити папку та перейти
+mkdir day-34-habit-tick && cd day-34-habit-tick
+
+# 2) створити файли (встав відповідний вміст з цього повідомлення)
+#    README.md, tick.py, progress.csv
+
+# 3) ініціалізація Git
+git init
+git add .
+git commit -m "Day 34: habit tick mini-CLI + progress tracker"
+
+# 4) основна гілка
+git branch -M main
+
+# 5) підключення до GitHub (заміни <your-username>)
+git remote add origin https://github.com/<your-username>/day-34-habit-tick.git
+git push -u origin main
